@@ -1,0 +1,163 @@
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to right,#C4E759,#6DE195);
+    }
+
+    .container {
+      width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+
+    h1 {
+      font-size: 50px;
+      text-align: center;
+      color: green;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+      letter-spacing: 3px;
+      margin-bottom: 5%;
+      opacity: .7;
+    }
+
+    .timer {
+      font-size: 48px;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    button {
+      width: 80px;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.2);
+      box-shadow: 3px 3px 5px rgba(31, 38, 135, .37);
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Countdown Timer</h1><br>
+    <div class="timer" id="timer">00:00</div><br><br>
+    <div class="buttons">
+      <button id="start-button">Start</button>
+      <button id="stop-button">Stop</button>
+      <button id="reset-button">Reset</button>
+    </div>
+  </div>
+  <script>
+    // Get the timer and button elements
+    var timer = document.getElementById("timer");
+    var startButton = document.getElementById("start-button");
+    var stopButton = document.getElementById("stop-button");
+    var resetButton = document.getElementById("reset-button");
+
+    // Define the initial time in seconds
+    var initialTime = 60;
+
+    // Define a variable to store the current time in seconds
+    var currentTime = initialTime;
+
+    // Define a variable to store the interval ID
+    var intervalID = null;
+
+    // Define a function to format the time in mm:ss format
+    function formatTime(time) {
+      // Calculate the minutes and seconds from the time
+      var minutes = Math.floor(time / 60);
+      var seconds = time % 60;
+
+      // Add leading zeros if needed
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+
+      // Return the formatted time
+      return minutes + ":" + seconds;
+    }
+
+    // Define a function to update the timer display
+    function updateTimer() {
+      // Format the current time and set it to the timer element
+      timer.textContent = formatTime(currentTime);
+
+      // Check if the current time is zero
+      if (currentTime === 0) {
+        // Clear the interval and disable the buttons
+        clearInterval(intervalID);
+        startButton.disabled = true;
+        stopButton.disabled = true;
+        resetButton.disabled = false;
+
+        // Alert the user that the time is up
+        alert("Time is up!");
+      }
+    }
+
+    // Define a function to start the countdown
+    function startCountdown() {
+      // Set the interval to decrement the current time by one every second
+      intervalID = setInterval(function() {
+        currentTime--;
+        updateTimer();
+      }, 1000);
+
+      // Enable the stop button and disable the start and reset buttons
+      stopButton.disabled = false;
+      startButton.disabled = true;
+      resetButton.disabled = true;
+    }
+
+    // Define a function to stop the countdown
+    function stopCountdown() {
+      // Clear the interval and enable the start and reset buttons
+      clearInterval(intervalID);
+      startButton.disabled = false;
+      resetButton.disabled = false;
+
+      // Disable the stop button
+      stopButton.disabled = true;
+    }
+
+    // Define a function to reset the countdown
+    function resetCountdown() {
+      // Reset the current time to the initial time and update the timer display
+      currentTime = initialTime;
+      updateTimer();
+
+      // Enable the start button and disable the stop and reset buttons
+      startButton.disabled = false;
+      stopButton.disabled = true;
+      resetButton.disabled = true;
+    }
+
+    // Add event listeners to the button click events
+    startButton.addEventListener("click", startCountdown);
+    stopButton.addEventListener("click", stopCountdown);
+    resetButton.addEventListener("click", resetCountdown);
+
+    // Update the timer display initially
+    updateTimer();
+  </script>
+</body>
+</html>
